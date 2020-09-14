@@ -2,6 +2,7 @@ const express = require('express')
 var cors = require('cors')
 const app = express()
 const compression = require('compression')
+const debug = require('debug')('back:server')
 
 app.use(compression())
 app.use(cors())
@@ -17,11 +18,15 @@ app.use((req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-  if (res.headersSent) {
-    return next(err)
-  }
-  res.status(err.status || 500)
-  res.send({ error: err.message })
+  err.status = err.status || 500
+  const debugSelected = err.debug ? err.debug : debug
+  delete err.debug
+  if (err.status < 500) delete err.stack
+  debugSelected(err)
+  const jsonToSend = { error: err.message }
+  if (err.errors) jsonToSend.errors = err.errors.map(er => er.message || er)
+  res.status(err.status)
+  res.json(jsonToSend)
 })
 
 module.exports = app
