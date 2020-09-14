@@ -28,6 +28,9 @@ class Country {
     return this._trm
   }
 
+  /**
+   * Set trm
+   */
   set trm (base) {
     this._trm = new TRM(base)
   }
