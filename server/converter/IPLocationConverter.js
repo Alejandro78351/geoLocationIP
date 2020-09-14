@@ -2,7 +2,7 @@ const IPLocation = require('../businessEntity/IPLocation')
 const constants = require('../utils/constants')
 
 /**
- *
+ * convert model into businees entity
  * @param {*} model
  */
 function convertFromModel (model) {
@@ -23,7 +23,7 @@ function convertFromModel (model) {
 }
 
 /**
- *
+ * convert reedis response into businees entity
  * @param {*} ipRedis
  */
 function convertFromRedis (ipRedis) {

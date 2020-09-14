@@ -1,8 +1,9 @@
 const ipLocationRepository = require('../repository/IPLocationRepository')
 const axios = require('axios')
 const constants = require('../utils/constants')
+
 /**
- *
+ * Service get country and TRM given a IP address
  * @param {*} ip ip
  */
 async function getIpLocation (ip) {
@@ -19,7 +20,7 @@ async function getIpLocation (ip) {
 }
 
 /**
- *
+ * Register IP in black list
  * @param {*} ip ip
  */
 async function registerIpBlackList (ip) {
@@ -40,7 +41,7 @@ async function registerIpBlackList (ip) {
 }
 
 /**
- *
+ * Get Info Ip from external APIs
  * @param {*} ip
  */
 async function getInfoAPis (ip) {

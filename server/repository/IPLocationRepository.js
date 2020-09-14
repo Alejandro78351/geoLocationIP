@@ -1,9 +1,9 @@
 const IPLocationModel = require('../model/IPLocationModel')
 const converter = require('../converter/IPLocationConverter')
 const redisClient = require('../utils/redis')
-
+const moment = require('moment')
 /**
- *
+ * findIPLocation in data sources
  * @param {*} ip ip
  */
 async function findIPLocation (ip) {
@@ -14,8 +14,10 @@ async function findIPLocation (ip) {
   }
   const models = await IPLocationModel.find({ ip })
   if (models && models.length > 0) {
+    const endDay = moment().endOf('day').diff(moment(), 'seconds')
     const ipLocation = converter.convertFromModel(models[0])
     await redisClient.set(`ip_location_${ip}`, JSON.stringify(ipLocation))
+    await redisClient.expire(`ip_location_${ip}`, endDay)
     return ipLocation
   } else {
     return undefined
@@ -23,21 +25,21 @@ async function findIPLocation (ip) {
 }
 
 /**
- *
- *
- *
+ * saveIPLocation in data sources
  * @param {*} ipLocation
  */
 async function saveIPLocation (ip, isblackListed, countryName, countryCode, trm) {
   const ipLocationModel = new IPLocationModel({ ip, isblackListed, country: { name: countryName, code: countryCode, trm } })
   await saveModel(ipLocationModel)
   const ipLocation = converter.convertFromModel(ipLocationModel)
+  const endDay = moment().endOf('day').diff(moment(), 'seconds')
   await redisClient.set(`ip_location_${ip}`, JSON.stringify(ipLocation))
+  await redisClient.expire(`ip_location_${ip}`, endDay)
   return ipLocation
 }
 
 /**
- *
+ * Persist model
  * @param {*} model
  */
 function saveModel (ipLocationModel) {
@@ -53,7 +55,7 @@ function saveModel (ipLocationModel) {
 }
 
 /**
- *
+ * Update ip location in data sources
  * @param {*} ipLocation IPLocation
  */
 async function updateIpLocation ({ ip, ...rest }) {
@@ -69,7 +71,7 @@ async function updateIpLocation ({ ip, ...rest }) {
 }
 
 /**
- *
+ * Update and persist model
  * @param {*} param0
  */
 function updateModel ({ ip, ...rest }) {
