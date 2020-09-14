@@ -7,7 +7,7 @@ npm i
 ```js
 npm start
 ```
-# Test
+# Pruebas
 
 ```js
 npm test
@@ -21,7 +21,7 @@ Se agregaron test e2e  e unitarios.
 | Post | localhost:8080/v1/location/blackList | N | { ip:’{ipAddress}'}
 | Get | localhost:8080/v1/location/?ip={ipAddress} | N | Empty
 
-# Consideracion
+# Consideraciones
 
 Para hacer un uso racional de las APIs:
 
