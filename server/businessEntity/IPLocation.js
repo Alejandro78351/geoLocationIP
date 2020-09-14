@@ -22,7 +22,7 @@ class IPLocation {
   }
 
   /**
-   * get countryCode
+   * get country
    */
   get country () {
     return this._country

@@ -8,14 +8,14 @@ class Country {
   }
 
   /**
-   * get countryCode
+   * get code
    */
   get code () {
     return this._code
   }
 
   /**
-   * get countryName
+   * get name
    */
   get name () {
     return this._name

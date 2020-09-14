@@ -5,12 +5,15 @@ class Rate {
   }
 
   /**
-     * get rate
-     */
+   * get name
+   */
   get name () {
     return this._name
   }
 
+  /**
+   * get value
+   */
   get value () {
     return this._value
   }

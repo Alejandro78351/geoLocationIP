@@ -5,7 +5,7 @@ const wrapper = require('../../utils/wrapper')(debug)
 const ipLocationService = require('../../service/IPLocationService')
 
 /**
- *
+ * Endponit get Ip location
  */
 router.get('/v1/location', wrapper(async (req, res) => {
   debug('ip controller getIpLocation')
@@ -14,7 +14,7 @@ router.get('/v1/location', wrapper(async (req, res) => {
 }))
 
 /**
- *
+ * Endopoint register ip in black list
  */
 router.post('/v1/location/blackList', wrapper(async (req, res) => {
   debug('ip controller registerIpBlackList')
