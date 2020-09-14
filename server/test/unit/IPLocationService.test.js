@@ -26,7 +26,7 @@ describe('IP location service ', () => {
     const ip = faker.internet.ip()
     const ipLocation = new IPLocation(ip, 'United States', 'US', false)
     ipLocation.country.trm = 'EUR'
-    ipLocation.country.trm.addRate('USD', 1.18441)
+    ipLocation.country.trm.addRate('USD', 1.18441, new Date())
     this.findIPLocation.resolves(ipLocation)
     const data = await ipLocationService.getIpLocation(ip)
     expect(data).toEqual(ipLocation)
@@ -36,7 +36,7 @@ describe('IP location service ', () => {
     const ip = faker.internet.ip()
     const ipLocation = new IPLocation(ip, 'United States', 'US', false)
     ipLocation.country.trm = 'EUR'
-    ipLocation.country.trm.addRate('USD', 1.18441)
+    ipLocation.country.trm.addRate('USD', 1.18441, new Date())
     this.findIPLocation.resolves(undefined)
     this.axiosStub.resolves({ data: { currencies: [{ code: 'US' }], success: true, rates: { US: 7643, COP: 354.3 } } })
     this.saveIPLocation.resolves(ipLocation)
@@ -48,7 +48,7 @@ describe('IP location service ', () => {
     const ip = faker.internet.ip()
     const ipLocation = new IPLocation(ip, 'United States', 'US', false)
     ipLocation.country.trm = 'EUR'
-    ipLocation.country.trm.addRate('USD', 1.18441)
+    ipLocation.country.trm.addRate('USD', 1.18441, new Date())
     this.updateIpLocation.resolves(ipLocation)
     const data = await ipLocationService.registerIpBlackList(ip)
     expect(this.saveIPLocation.called)
@@ -59,7 +59,7 @@ describe('IP location service ', () => {
     const ip = faker.internet.ip()
     const ipLocation = new IPLocation(ip, 'United States', 'US', false)
     ipLocation.country.trm = 'EUR'
-    ipLocation.country.trm.addRate('USD', 1.18441)
+    ipLocation.country.trm.addRate('USD', 1.18441, new Date())
     this.updateIpLocation.throws(new Error('Ip has not been created'))
     this.saveIPLocation.resolves(ipLocation)
     const data = await ipLocationService.registerIpBlackList(ip)

@@ -13,7 +13,7 @@ function convertFromModel (model) {
       ipLocation.country.trm = model.country.trm.base
       const rates = model.country.trm.rates
       for (let index = 0; index < rates.length; index++) {
-        ipLocation.country.trm.addRate(rates[index].rate, rates[index].value)
+        ipLocation.country.trm.addRate(rates[index].rate, rates[index].value, rates[index].date)
       }
     }
   } else {
@@ -34,7 +34,7 @@ function convertFromRedis (ipRedis) {
       ipLocation.country.trm = ipRedis._country._trm._base
       const rates = ipRedis._country._trm._rate
       for (let index = 0; index < rates.length; index++) {
-        ipLocation.country.trm.addRate(rates[index]._name, rates[index]._value)
+        ipLocation.country.trm.addRate(rates[index]._name, rates[index]._value, rates[index]._date)
       }
     }
   } else {

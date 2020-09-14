@@ -25,8 +25,8 @@ class TRM {
    * @param {A} name
    * @param {*} value
    */
-  addRate (name, value) {
-    this._rate.push(new Rate(name, value))
+  addRate (name, value, date) {
+    this._rate.push(new Rate(name, value, date))
   }
 }
 

@@ -1,7 +1,8 @@
 class Rate {
-  constructor (name, value) {
+  constructor (name, value, date) {
     this._name = name
     this._value = value
+    this._date = date
   }
 
   /**
@@ -16,6 +17,13 @@ class Rate {
    */
   get value () {
     return this._value
+  }
+
+  /**
+   * get date
+   */
+  get date () {
+    return this._date
   }
 }
 

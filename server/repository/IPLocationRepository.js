@@ -14,10 +14,7 @@ async function findIPLocation (ip) {
   }
   const models = await IPLocationModel.find({ ip })
   if (models && models.length > 0) {
-    const endDay = moment().endOf('day').diff(moment(), 'seconds')
     const ipLocation = converter.convertFromModel(models[0])
-    await redisClient.set(`ip_location_${ip}`, JSON.stringify(ipLocation))
-    await redisClient.expire(`ip_location_${ip}`, endDay)
     return ipLocation
   } else {
     return undefined
@@ -62,8 +59,13 @@ async function updateIpLocation ({ ip, ...rest }) {
   const models = await IPLocationModel.find({ ip })
   if (models && models.length > 0) {
     await redisClient.del(`ip_location_${ip}`)
-    const model = await updateModel({ ip, ...rest })
-    return converter.convertFromModel(model)
+    await updateModel({ ip, ...rest })
+    const models = await IPLocationModel.find({ ip })
+    const ipLocation = converter.convertFromModel(models[0])
+    const endDay = moment().endOf('day').diff(moment(), 'seconds')
+    await redisClient.set(`ip_location_${ip}`, JSON.stringify(ipLocation))
+    await redisClient.expire(`ip_location_${ip}`, endDay)
+    return ipLocation
   } else {
     const err = new Error('Ip has not been created')
     throw err

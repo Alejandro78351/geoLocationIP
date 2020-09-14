@@ -33,8 +33,9 @@ describe('IP location service ', () => {
     const ip = faker.internet.ip()
     const ipLocation = new IPLocation(ip, 'United States', 'US', false)
     ipLocation.country.trm = 'EUR'
-    ipLocation.country.trm.addRate('USD', 1.18441)
-    const redisResp = `{"_ip":"${ip}","_isBlackListed":false,"_country":{"_name":"United States","_code":"US","_trm":{"_base":"EUR","_rate":[{"_name":"USD","_value":1.18441}]}}}`
+    const date = new Date()
+    ipLocation.country.trm.addRate('USD', 1.18441, date.getTime())
+    const redisResp = `{"_ip":"${ip}","_isBlackListed":false,"_country":{"_name":"United States","_code":"US","_trm":{"_base":"EUR","_rate":[{"_name":"USD","_value":1.18441,"_date":${date.getTime()}}]}}}`
     this.redisGet.resolves(redisResp)
     const data = await ipLocationRepository.findIPLocation(ip)
     expect(data).toEqual(ipLocation)
@@ -44,14 +45,15 @@ describe('IP location service ', () => {
     const ip = faker.internet.ip()
     const ipLocation = new IPLocation(ip, 'United States', 'US', false)
     ipLocation.country.trm = 'EUR'
-    ipLocation.country.trm.addRate('USD', 1.6464)
+    const date = new Date()
+    ipLocation.country.trm.addRate('USD', 1.6464, date)
     this.redisGet.resolves(undefined)
     const respModel = [
       {
         isblackListed: false,
         _id: '5f5edb4a02ac320ef340ea8e',
         ip: ip,
-        country: { name: 'United States', code: 'US', trm: { base: 'EUR', rates: [{ rate: 'USD', value: 1.6464 }] } },
+        country: { name: 'United States', code: 'US', trm: { base: 'EUR', rates: [{ rate: 'USD', value: 1.6464, date }] } },
         __v: 0
       }
     ]
@@ -66,10 +68,11 @@ describe('IP location service ', () => {
     const ip = faker.internet.ip()
     const ipLocation = new IPLocation(ip, 'United States', 'US', false)
     ipLocation.country.trm = 'EUR'
-    ipLocation.country.trm.addRate('USD', 1.47654)
+    const date = new Date()
+    ipLocation.country.trm.addRate('USD', 1.47654, date)
     this.redisSet.resolves({})
     this.redisExpire.resolves({})
-    const trm = { base: 'EUR', rates: [{ rate: 'USD', value: 1.47654 }] }
+    const trm = { base: 'EUR', rates: [{ rate: 'USD', value: 1.47654, date }] }
     const data = await ipLocationRepository.saveIPLocation(ip, false, 'United States', 'US', trm)
     expect(data).toEqual(ipLocation)
   })
@@ -82,7 +85,7 @@ describe('IP location service ', () => {
     }
     const ipLocation = new IPLocation(ip, 'United States', 'US', true)
     ipLocation.country.trm = 'EUR'
-    ipLocation.country.trm.addRate('USD', 1.6282)
+    ipLocation.country.trm.addRate('USD', 1.6282, new Date())
 
     this.ipLocationModel.resolves([])
     try {
