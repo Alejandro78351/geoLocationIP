@@ -92,6 +92,13 @@ async function getInfoAPis (ip) {
   return infoApi
 }
 
+/**
+ * Get Info TRM rate
+ * @param {*} ip
+ * @param {*} countryName
+ * @param {*} countryCode
+ * @param {*} currencies
+ */
 async function getInfoAPisTrm (ip, countryName, countryCode, currencies) {
   let infoApi
   const newCurrencies = currencies.join(',')
